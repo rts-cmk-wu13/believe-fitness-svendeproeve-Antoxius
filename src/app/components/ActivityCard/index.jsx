@@ -1,8 +1,9 @@
 "use client";
-import Image from "next/image";
 import {useRouter} from "next/navigation";
+import { FaStar } from "react-icons/fa";
 
-export default function ActivityCard ({ activity, isEnrolled, userId, token }) {
+
+export default function ActivityCard ({ activity, isEnrolled, userId, token, trainerAssetUrl }) {
     const router = useRouter();
 
     const handleLeave = async () => {
@@ -28,17 +29,42 @@ export default function ActivityCard ({ activity, isEnrolled, userId, token }) {
     return (
         <>
             <div className="relative h-[50vh]">
-                <Image src={activity.asset.url} alt={activity.name} fill unoptimized className="w-full h-full object-cover" />
-                {isEnrolled 
-                    ? <button onClick={handleLeave} className="absolute bottom-7 right-7 bg-color text-white px-20 py-3 rounded">Afmeld</button> 
-                    : <button onClick={handleJoin} className="absolute bottom-7 right-7 bg-color text-white px-20 py-3 rounded">Tilmeld</button>
-                }
+
+                <h1 className="absolute bottom-20 left-4 z-10 color-primary text-3xl w-40 font-bold">
+                    {activity.className}
+                </h1>
+                <div className="absolute bottom-10 left-4 right-4 z-10 text-md font-bold">
+
+                <div className="flex gap-2 w-full items-center color-primary">
+                    <FaStar className="inline-block"/>
+                    <FaStar className="inline-block"/>
+                    <FaStar className="inline-block"/>
+                    <FaStar className="inline-block"/>
+                    <FaStar className="inline-block"/>
+                    <p className="color-primary">5/5</p>
+                    <button className="ml-auto border-2 rounded-full px-8 py-2">Rate</button>
+                </div>
+                </div>
+                <img src={activity.asset.url} alt={activity.name} className="w-full h-full object-cover" />
+
+                
             </div>
-                <article className="m-5">
-                    <h1>{activity.name}</h1>
-                    <p>{activity.minAge} - {activity.maxAge} år</p>
-                    <p>{activity.description}</p>
+            
+                <article className="m-5 flex flex-col gap-5 text-black">
+                    <p className="font-bold">{activity.classDay} - {activity.classTime}</p>
+                    <p>{activity.classDescription}</p>
+                    <h2 className="font-bold text-xl">Trainer</h2>
+                    <div className="flex items-center gap-3">
+                        <img className="w-20 rounded-xl" src={trainerAssetUrl} />
+                        <h3 className="font-bold">{activity.trainer.trainerName}</h3>
+                    </div>
                 </article>
+                <div className="w-full px-5 pb-7 text-black ">
+                    {isEnrolled 
+                    ? <button onClick={handleLeave} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Leave</button> 
+                    : <button onClick={handleJoin} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Sign up</button>
+                }
+                </div>
         </>
     )
 }

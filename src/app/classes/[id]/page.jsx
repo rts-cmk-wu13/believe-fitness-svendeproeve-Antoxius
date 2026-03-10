@@ -7,6 +7,17 @@ import ActivityCard from "@/app/components/ActivityCard";
 export default async function SingleActivityPage ({ params }) {
     const { id } = await params;
     const activity = await getActivityById(id);
+
+    let trainerAssetUrl = null;
+    if (activity.trainer.assetId) {
+        const res = await fetch(`http://localhost:4000/api/v1/assets/${activity.trainer.assetId}`);
+        if (res.ok) {
+            const trainerAsset = await res.json();
+            trainerAssetUrl = trainerAsset.url;
+        }
+    }
+    // Jeg har valgt at hente trainerens asset i denne komponent, da det er den eneste måde jeg kunne få det til at virke på, uden at downloade billedet.
+
     const cookieStore = await cookies();
     const userId = cookieStore.get("userId").value;
     const token = cookieStore.get("authToken").value;
@@ -31,7 +42,13 @@ export default async function SingleActivityPage ({ params }) {
 return (
     <>
         <article className="text-white">
-            <ActivityCard activity={activity} isEnrolled={isEnrolled} userId={userId} token={token} />
+            <ActivityCard
+                activity={activity}
+                isEnrolled={isEnrolled}
+                userId={userId}
+                token={token}
+                trainerAssetUrl={trainerAssetUrl}
+            />
         </article>
         {/* <Navigation /> */}
     </>

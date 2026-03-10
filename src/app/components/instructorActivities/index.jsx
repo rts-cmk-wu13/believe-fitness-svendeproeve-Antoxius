@@ -1,6 +1,7 @@
 import { getAllActivities } from "@/app/lib/activities";
 import Link from "next/link";
 
+
 export default async function InstructorActivities ({ userId }) {
 
     const activities = await getAllActivities();
