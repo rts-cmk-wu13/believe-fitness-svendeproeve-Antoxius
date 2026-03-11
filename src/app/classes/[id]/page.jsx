@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { getActivityById } from "../../lib/activities";
 import ActivityCard from "@/app/components/ActivityCard";
-// import Navigation from "@/app/components/Navigation";
 
 
 export default async function SingleActivityPage ({ params }) {
@@ -16,11 +15,24 @@ export default async function SingleActivityPage ({ params }) {
             trainerAssetUrl = trainerAsset.url;
         }
     }
-    // Jeg har valgt at hente trainerens asset i denne komponent, da det er den eneste måde jeg kunne få det til at virke på, uden at downloade billedet.
+    // Jeg har valgt at hente trainerens asset i dette komponent, da det er den eneste måde jeg kunne få det til at virke på, uden at downloade billedet.
 
     const cookieStore = await cookies();
-    const userId = cookieStore.get("userId").value;
-    const token = cookieStore.get("authToken").value;
+
+    // Hvis brugeren ikke er logget ind, findes cookies ikke.
+    // Derfor henter vi dem sikkert og sætter null hvis de mangler.
+    let userId = null;
+    let token = null;
+
+    const userIdCookie = cookieStore.get("userId");
+    if (userIdCookie) {
+        userId = userIdCookie.value;
+    }
+
+    const tokenCookie = cookieStore.get("authToken");
+    if (tokenCookie) {
+        token = tokenCookie.value;
+    }
 
     /*
         token objekt ser sådanne ud (value er eksempel på token key):
@@ -34,7 +46,15 @@ export default async function SingleActivityPage ({ params }) {
 
     console.log(activity);
 
-    const isEnrolled = activity.users.some(user => user.id === Number(userId));
+    // Standard: ikke tilmeldt.
+    // Hvis vi har et userId, kan vi tjekke om brugeren er i activity.users.
+    let isEnrolled = false;
+    if (userId) {
+        isEnrolled = activity.users.some(user => user.id === Number(userId));
+    }
+    // Sammenligner brugerens id fra arrayet med det id jeg har fisket ud a cookien og laver det om til number
+    // for at finde ud af om brugeren er tilmeldt aktiviteten, så jeg kan vise det rigtige på knappen (join/leave)
+    // Så jeg enten får true eller false
 
     console.log("isEnrolled", isEnrolled);
  
@@ -50,7 +70,6 @@ return (
                 trainerAssetUrl={trainerAssetUrl}
             />
         </article>
-        {/* <Navigation /> */}
     </>
 )
 }

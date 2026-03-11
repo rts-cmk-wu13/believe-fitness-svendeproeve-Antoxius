@@ -91,7 +91,7 @@ export default function ContactForm () {
                 </label>
                 {formState.errors?.message?.[0] && <p className="text-red-500">{formState.errors.message[0]}</p>}
             </div>
-            <button type="submit" className="bg-yellow-400 mx-auto px-15 py-3 text-lg rounded-full w-full">Send besked</button>
+            <button type="submit" className="bg-yellow-400 mx-auto px-15 py-3 uppercase font-bold text-lg rounded-full w-full">Send message</button>
         </form>
         </div>
         </>

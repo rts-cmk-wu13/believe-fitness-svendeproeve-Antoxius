@@ -1,13 +1,20 @@
 "use client";
 import {useRouter} from "next/navigation";
 import { FaStar } from "react-icons/fa";
+import Navigation from "../Navigation";
 
 
 export default function ActivityCard ({ activity, isEnrolled, userId, token, trainerAssetUrl }) {
     const router = useRouter();
+    let isLoggedIn;
+    if (token && userId) {
+        isLoggedIn = true;
+    } else {
+        isLoggedIn = false;
+    }
 
     const handleLeave = async () => {
-        await fetch(`http://localhost:4000/api/v1/users/${userId}/activities/${activity.id}`, {
+        await fetch(`http://localhost:4000/api/v1/users/${userId}/classes/${activity.id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -17,7 +24,7 @@ export default function ActivityCard ({ activity, isEnrolled, userId, token, tra
     }
     
     const handleJoin = async () => {
-        await fetch(`http://localhost:4000/api/v1/users/${userId}/activities/${activity.id}`, {
+        await fetch(`http://localhost:4000/api/v1/users/${userId}/classes/${activity.id}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -29,7 +36,7 @@ export default function ActivityCard ({ activity, isEnrolled, userId, token, tra
     return (
         <>
             <div className="relative h-[50vh]">
-
+                <Navigation />
                 <h1 className="absolute bottom-20 left-4 z-10 color-primary text-3xl w-40 font-bold">
                     {activity.className}
                 </h1>
@@ -59,12 +66,15 @@ export default function ActivityCard ({ activity, isEnrolled, userId, token, tra
                         <h3 className="font-bold">{activity.trainer.trainerName}</h3>
                     </div>
                 </article>
-                <div className="w-full px-5 pb-7 text-black ">
-                    {isEnrolled 
-                    ? <button onClick={handleLeave} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Leave</button> 
-                    : <button onClick={handleJoin} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Sign up</button>
-                }
-                </div>
+
+				{isLoggedIn ? (
+					<div className="w-full px-5 pb-7 text-black ">
+						{isEnrolled 
+						? <button onClick={handleLeave} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Leave</button> 
+						: <button onClick={handleJoin} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Sign up</button>
+					}
+					</div>
+				) : null}
         </>
     )
 }
