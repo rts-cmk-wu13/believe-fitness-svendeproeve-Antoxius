@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
 
-export default async function page () {
+export default async function AllClassesPage () {
     const res = await fetch(`http://localhost:4000/api/v1/classes`)
     const classes = await res.json();
     

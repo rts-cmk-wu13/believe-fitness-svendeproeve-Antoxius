@@ -112,3 +112,55 @@ export async function submitContact(prevState, formData) {
 
     
 }
+
+export async function joinClass(classId) {
+    const cookieStore = await cookies();
+    const userIdCookie = cookieStore.get("userId");
+    const tokenCookie = cookieStore.get("authToken");
+
+    if (!userIdCookie || !tokenCookie) {
+        return { ok: false, error: "Not logged in" };
+    }
+
+    const res = await fetch(
+        `http://localhost:4000/api/v1/users/${userIdCookie.value}/classes/${classId}`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${tokenCookie.value}`,
+            },
+        }
+    );
+
+    if (!res.ok) {
+        return { ok: false, error: `Join failed (${res.status})` };
+    }
+
+    return { ok: true };
+}
+
+export async function leaveClass(classId) {
+    const cookieStore = await cookies();
+    const userIdCookie = cookieStore.get("userId");
+    const tokenCookie = cookieStore.get("authToken");
+
+    if (!userIdCookie || !tokenCookie) {
+        return { ok: false, error: "Not logged in" };
+    }
+
+    const res = await fetch(
+        `http://localhost:4000/api/v1/users/${userIdCookie.value}/classes/${classId}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${tokenCookie.value}`,
+            },
+        }
+    );
+
+    if (!res.ok) {
+        return { ok: false, error: `Leave failed (${res.status})` };
+    }
+
+    return { ok: true };
+}

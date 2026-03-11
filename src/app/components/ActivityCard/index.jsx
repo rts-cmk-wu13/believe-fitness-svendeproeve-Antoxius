@@ -1,36 +1,16 @@
 "use client";
-import {useRouter} from "next/navigation";
 import { FaStar } from "react-icons/fa";
 import Navigation from "../Navigation";
+import JoinClassButton from "@/app/components/JoinClassButton";
+import LeaveClassButton from "@/app/components/LeaveClassButton";
 
 
 export default function ActivityCard ({ activity, isEnrolled, userId, token, trainerAssetUrl }) {
-    const router = useRouter();
     let isLoggedIn;
     if (token && userId) {
         isLoggedIn = true;
     } else {
         isLoggedIn = false;
-    }
-
-    const handleLeave = async () => {
-        await fetch(`http://localhost:4000/api/v1/users/${userId}/classes/${activity.id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        router.refresh();
-    }
-    
-    const handleJoin = async () => {
-        await fetch(`http://localhost:4000/api/v1/users/${userId}/classes/${activity.id}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        router.refresh();
     }
 
     return (
@@ -70,8 +50,8 @@ export default function ActivityCard ({ activity, isEnrolled, userId, token, tra
 				{isLoggedIn ? (
 					<div className="w-full px-5 pb-7 text-black ">
 						{isEnrolled 
-						? <button onClick={handleLeave} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Leave</button> 
-						: <button onClick={handleJoin} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full">Sign up</button>
+                        ? <LeaveClassButton classId={activity.id} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full" />
+                        : <JoinClassButton classId={activity.id} className="uppercase bg-primary text-center w-full font-bold py-3 rounded-full" />
 					}
 					</div>
 				) : null}

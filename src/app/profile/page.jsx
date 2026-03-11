@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import Link from "next/link"
 import { FaUser } from "react-icons/fa";
 import InstructorActivities from "@/app/components/InstructorActivities/index.jsx";
+import LeaveClassButton from "@/app/components/LeaveClassButton";
 
 export default async function ProfilePage() {
 
@@ -20,6 +21,7 @@ export default async function ProfilePage() {
     })
     
     const user = await res.json();
+    // localStorage.setItem("userClasses", JSON.stringify(user.classes)) // gemmer brugerens aktiviteter i localStorage, så jeg kan bruge det på andre sider uden at skulle hente det igen
     console.log(user);
 
 return (
@@ -52,7 +54,10 @@ return (
                                 <button className="bg-background self-start text-sm rounded-full inline-block font-bold uppercase bg-primary px-5 py-3">
                                     <Link href={`/classes/${classes.id}`} >Show Class</Link>
                                 </button>
-                                <button className="bg-background self-start text-sm rounded-full inline-block font-bold uppercase bg-primary px-6 py-3">Leave</button>
+                                <LeaveClassButton
+                                    classId={classes.id}
+                                    className="bg-background self-start text-sm rounded-full inline-block font-bold uppercase bg-primary px-6 py-3"
+                                />
 
                             </div>
                         </li>
