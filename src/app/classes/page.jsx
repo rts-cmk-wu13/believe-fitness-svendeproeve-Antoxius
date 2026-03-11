@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
-
 export default async function AllClassesPage () {
+    
+
     const res = await fetch(`http://localhost:4000/api/v1/classes`)
     const classes = await res.json();
+    console.log(classes);
+    
+
     
     
     return (
@@ -36,7 +40,7 @@ export default async function AllClassesPage () {
 
             <h2 className="text-2xl pb-4 pl-1">Classes for You</h2>
             <div className="flex gap-4 overflow-x-auto pb-4">
-                {classes.map((classItem) => (
+                {classes.length > 0 ? classes.map((classItem) => (
                     <Link
                         href={`/classes/${classItem.id}`}
                         key={classItem.id}
@@ -60,7 +64,12 @@ export default async function AllClassesPage () {
                             </article>
                         </div>
                     </Link>
-                ))}
+                    )) : <div>
+
+                    <p className="text-gray-500">No classes found.</p>
+                    
+                    </div>
+                }
             </div>
         </div>
 )
