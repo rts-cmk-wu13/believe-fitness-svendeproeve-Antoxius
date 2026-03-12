@@ -20,7 +20,7 @@ export default async function SingleActivityPage ({ params }) {
     const cookieStore = await cookies();
 
     // Hvis brugeren ikke er logget ind, findes cookies ikke.
-    // Derfor henter vi dem sikkert og sætter null hvis de mangler.
+    // Derfor hentes de sikkert og sættes til null hvis de mangler.
     let userId = null;
     let token = null;
 

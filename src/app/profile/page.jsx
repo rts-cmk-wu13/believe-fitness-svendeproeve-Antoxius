@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link"
+import { redirect } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import InstructorActivities from "@/app/components/InstructorActivities/index.jsx";
 import LeaveClassButton from "@/app/components/LeaveClassButton";
@@ -7,8 +8,16 @@ import LeaveClassButton from "@/app/components/LeaveClassButton";
 export default async function ProfilePage() {
 
     const cookieStore = await cookies();
-    const userId = cookieStore.get("userId").value;
-    const token = cookieStore.get("authToken").value;
+    const userIdCookie = cookieStore.get("userId");
+    const tokenCookie = cookieStore.get("authToken");
+
+    // Fallback: user is not logged in
+    if (!userIdCookie || !tokenCookie) {
+        redirect("/login");
+    }
+
+    const userId = userIdCookie.value;
+    const token = tokenCookie.value;
 
     console.log(userId);
     console.log(token);
@@ -19,6 +28,11 @@ export default async function ProfilePage() {
         },
         cache: "no-store" // for at sikre at jeg altid får opdaterede data og ikke en cached version, da det er brugerens profil og den skal være opdateret
     })
+
+    // If token is missing/expired/invalid, send the user to login
+    if (res.status === 401 || res.status === 403) {
+        redirect("/login");
+    }
     
     const user = await res.json();
     // localStorage.setItem("userClasses", JSON.stringify(user.classes)) // gemmer brugerens aktiviteter i localStorage, så jeg kan bruge det på andre sider uden at skulle hente det igen

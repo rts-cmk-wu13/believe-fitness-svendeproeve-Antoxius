@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosClose } from "react-icons/io";
+import LogoutButton from "./logoutButton/LogoutButton";
 
 export default function Navigation() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -58,9 +59,7 @@ export default function Navigation() {
 					<Link href="/profile" onClick={closeMenu}>
 						My Profile
 					</Link>
-					<Link href="/logout" onClick={closeMenu}>
-						Log Out
-					</Link>
+					<LogoutButton onClick={closeMenu} />
 				</nav>
 			</div>
 		</div>

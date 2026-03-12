@@ -33,3 +33,7 @@ body {
 .color-primary{
   color: var(--color-primary);
 }
+
+.scroll-hidden{
+  scrollbar-width: none; /* Firefox */;
+}
