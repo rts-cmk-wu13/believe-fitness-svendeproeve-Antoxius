@@ -29,7 +29,7 @@ export default async function ProfilePage() {
         cache: "no-store" // for at sikre at jeg altid får opdaterede data og ikke en cached version, da det er brugerens profil og den skal være opdateret
     })
 
-    // If token is missing/expired/invalid, send the user to login
+    // hvis token mangler/er udløbet/ugyldigt, send brugeren til login
     if (res.status === 401 || res.status === 403) {
         redirect("/login");
     }
@@ -37,6 +37,8 @@ export default async function ProfilePage() {
     const user = await res.json();
     // localStorage.setItem("userClasses", JSON.stringify(user.classes)) // gemmer brugerens aktiviteter i localStorage, så jeg kan bruge det på andre sider uden at skulle hente det igen
     console.log(user);
+
+    const isInstructor = user.role === "instructor" || user.role === "admin";
 
 return (
     <>
@@ -48,14 +50,20 @@ return (
                 <FaUser className="text-black text-6xl p-3 rounded-full bg-primary"/>
                 <div className="flex flex-col py-3">
                     <p className="mt-2 text-2xl font-bold">{user.userFirstName} {user.userLastName}</p>
-                    <p>{user.role == "instructor" ? "Instructor" : "Member"}</p>
+                    <p>{isInstructor ? "Instructor" : "Member"}</p>
                 </div>
             </div>
             <div className="m-5">
 
-            { user.role === "instructor" ? (
+            { isInstructor ? (
                 <>
-                    <p className="">You are an instructor, and therefore have no enrolled classes.</p>
+                    <Link
+                        href="/create-class"
+                        className="bg-background self-start text-sm rounded-full inline-block font-bold uppercase bg-primary px-6 py-3"
+                    >
+                        ADD CLASS
+                    </Link>
+                    
                     <InstructorActivities userId={user.id}/>
                 </>
             ) : (
