@@ -62,3 +62,6 @@ Når jeg så bruger funktionen et andet sted (fx på en side), kan jeg bare skri
 - Server actions gør det nemmere at arbejde med fx. cookies, fordi jeg kan læse/sætte/slette dem server-side med `cookies()`. Det gør det også mere sikkert da koden bliver afviklet på serveren.
 - Zod gør at validering og fejl er ret nemt at vise i UI.
 
+lille note: Fik oprettet and class der hedder LilleHest, og k
+an ikke slette den igen uden at opgradere til SQLite Viewer PRO
+

@@ -48,8 +48,6 @@ export async function loginUser (prevState, formData) {
         }
     }
     // ----- error handling end -----
-
-    // console.log(response);
     
     const data = await response.json();
 
@@ -57,7 +55,7 @@ export async function loginUser (prevState, formData) {
     cookieStore.set("userId", data.userId) // sætter cookie med userID, så jeg fx kan hente brugerens data på andre sider
     cookieStore.set("role", data.role) // sætter cookie med brugerens rolle, så jeg fx kan håndtere adgangskontrol
 
-    return redirect("/profile"); // sender brugeren til forsiden efter login brug fx. redirect("/profile") hvis du vil sende dem til en profilside efter login
+    return redirect("/profile"); // sender brugeren til profile siden efter login
     
 }
 

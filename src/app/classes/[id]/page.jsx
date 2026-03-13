@@ -1,15 +1,17 @@
 import { cookies } from "next/headers";
-import { getActivityById } from "../../lib/activities";
-import ActivityCard from "@/app/components/ActivityCard";
+import { getClassById } from "../../lib/classes";
+import ActivityCard from "@/app/components/ClassCard";
 
 
-export default async function SingleActivityPage ({ params }) {
+export default async function SingleClassPage ({ params }) {
     const { id } = await params;
-    const activity = await getActivityById(id);
-
+    const classData = await getClassById(id);
+    console.log(classData);
+    
     let trainerAssetUrl = null;
-    if (activity.trainer.assetId) {
-        const res = await fetch(`http://localhost:4000/api/v1/assets/${activity.trainer.assetId}`);
+    if (classData.trainer.assetId) {
+        const res = await fetch(`http://localhost:4000/api/v1/assets/${classData.trainer.assetId}`);
+        
         if (res.ok) {
             const trainerAsset = await res.json();
             trainerAssetUrl = trainerAsset.url;
@@ -44,13 +46,13 @@ export default async function SingleActivityPage ({ params }) {
 
 
 
-    console.log(activity);
+    console.log(classData);
 
     // Standard: ikke tilmeldt.
     // Hvis vi har et userId, kan vi tjekke om brugeren er i activity.users.
     let isEnrolled = false;
     if (userId) {
-        isEnrolled = activity.users.some(user => user.id === Number(userId));
+        isEnrolled = classData.users.some(user => user.id === Number(userId));
     }
     // Sammenligner brugerens id fra arrayet med det id jeg har fisket ud a cookien og laver det om til number
     // for at finde ud af om brugeren er tilmeldt aktiviteten, så jeg kan vise det rigtige på knappen (join/leave)
@@ -63,7 +65,7 @@ return (
     <>
         <article className="text-white">
             <ActivityCard
-                activity={activity}
+                activity={classData}
                 isEnrolled={isEnrolled}
                 userId={userId}
                 token={token}

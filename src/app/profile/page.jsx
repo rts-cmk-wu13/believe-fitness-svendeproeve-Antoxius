@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import Link from "next/link"
 import { redirect } from "next/navigation";
 import { FaUser } from "react-icons/fa";
-import InstructorActivities from "@/app/components/InstructorActivities/index.jsx";
+import InstructorActivities from "@/app/components/instructorClasses/index.jsx";
 import LeaveClassButton from "@/app/components/LeaveClassButton";
 
 export default async function ProfilePage() {
@@ -57,14 +57,14 @@ return (
 
             { isInstructor ? (
                 <>
+                    <InstructorActivities userId={user.id}/>
+
                     <Link
                         href="/create-class"
-                        className="bg-background self-start text-sm rounded-full inline-block font-bold uppercase bg-primary px-6 py-3"
+                        className="bg-background justify-end text-sm rounded-full inline-block font-bold uppercase bg-primary px-6 py-3"
                     >
                         ADD CLASS
                     </Link>
-                    
-                    <InstructorActivities userId={user.id}/>
                 </>
             ) : (
                 <ul className="p-3 mt-4 border  rounded-2xl">
